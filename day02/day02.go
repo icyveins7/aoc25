@@ -1,10 +1,10 @@
 package main
 
 import (
-	"fmt"
-	"os"
-	"strings"
-	"strconv"
+  "fmt"
+  "os"
+  "strings"
+  "strconv"
 )
 
 func processRange(start, end int) int {
@@ -22,23 +22,38 @@ func processRange(start, end int) int {
 
 func checkNumber(number int) bool {
   // convert to string
+  s := strconv.Itoa(number)
 
   // exit if string has odd number of chars
+  if len(s) % 2 != 0 {
+    return false
+  }
 
   // get first and second half strings
+  i1 := 0
+  i2 := len(s) / 2
 
   // compare characters
+  for i := 0; i < len(s) / 2; i++ {
+    if s[i1] != s[i2] {
+      return false
+    }
+    i1 += 1
+    i2 += 1
+  }
+
+  return true
 }
 
 func main() {
   fmt.Println("Day 02")
 
-	content, err := os.ReadFile("input.txt")
-	if err != nil {
-		fmt.Println(err)
-	}
+  content, err := os.ReadFile("input.txt")
+  if err != nil {
+    fmt.Println(err)
+  }
 
-	ranges := strings.Split(string(content), ",")
+  ranges := strings.Split(strings.TrimSpace(string(content)), ",")
 
   // loop over ranges
   totalsum := 0
@@ -46,8 +61,16 @@ func main() {
     // split the string
     splitstrings := strings.Split(s, "-")
 
-		start, err = strconv.Atoi(splitstrings[0])
-		end, err = strconv.Atoi(splitstrings[1])
+    start, err := strconv.Atoi(splitstrings[0])
+    if err != nil {
+      fmt.Println(err)
+      break
+    }
+    end, err := strconv.Atoi(splitstrings[1])
+    if err != nil {
+      fmt.Println(err)
+      break
+    }
 
     fmt.Printf("processing %d-%d\n", start, end)
 
